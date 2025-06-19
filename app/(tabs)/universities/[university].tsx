@@ -1,11 +1,8 @@
 import { EnquiryModal, EnquiryModalProps } from "@/components/EnquiryModal";
-import { Box } from "@/components/ui/box";
-import { HStack } from "@/components/ui/hstack";
-import { Text } from "@/components/ui/text";
-import { useIsFocused } from "@react-navigation/native";
-import { useLocalSearchParams, useRouter } from "expo-router";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { View, StyleSheet, BackHandler, Platform } from "react-native";
+import { getWebviewUrl } from "@/utils/getWebviewUrl";
+import { useLocalSearchParams } from "expo-router";
+import { useState } from "react";
+import { View, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import WebView from "react-native-webview";
 
@@ -17,9 +14,8 @@ type EnquiryEvent = {
 };
 
 export default function University() {
-  const router = useRouter();
   const { university, "#": hash } = useLocalSearchParams();
-  let uri = `https://feshia.com/universities/${university}?webview=true`;
+  let uri = getWebviewUrl(university as string);
   const [openEnquiryModal, setOpenEnquiryModal] = useState<
     EnquiryEvent["resource"] | null
   >(null);
@@ -44,43 +40,19 @@ export default function University() {
       <EnquiryModal
         closeModal={() => setOpenEnquiryModal(null)}
         isVisible={!!openEnquiryModal}
-        resource={{
-          type: openEnquiryModal?.type || "university",
-          resourceId: openEnquiryModal?.resourceId || "",
-        }}
+        resource={
+          openEnquiryModal?.type === "general"
+            ? { type: "general" }
+            : {
+                type: openEnquiryModal?.type || "university",
+                resourceId: openEnquiryModal?.resourceId || "",
+              }
+        }
         title={openEnquiryModal?.title || "Enquiry"}
       />
     </SafeAreaView>
   );
 }
-
-const Summary = () => {
-  return (
-    <>
-      <HStack className="mb-6">
-        <Box>
-          <Text className="">QS Rank</Text>
-          <Text className="font-bold">1</Text>
-        </Box>
-        <Box className="flex-1 items-end">
-          <Text className="">Scholarship</Text>
-          <Text className="font-bold">Available</Text>
-        </Box>
-      </HStack>
-
-      <HStack className="mb-6">
-        <Box>
-          <Text className="">QS Rank</Text>
-          <Text className="font-bold text-feshia-title">1</Text>
-        </Box>
-        <Box className="flex-1 items-end">
-          <Text className="">Scholarship</Text>
-          <Text className="font-bold text-feshia-title">Available</Text>
-        </Box>
-      </HStack>
-    </>
-  );
-};
 
 const SkeletonLoader = () => {
   return (

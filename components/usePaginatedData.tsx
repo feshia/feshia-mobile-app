@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 
-type UsePaginatedDataOptions<T, K> = {
+type UsePaginatedDataOptions<T> = {
   url: string;
   serializer?: (...args: any) => T[];
   headers?: Record<string, string>;
@@ -18,7 +18,7 @@ type UsePaginatedDataReturn<T> = {
   hasMore: boolean;
 };
 
-export const usePaginatedData = <T = unknown, K = unknown>({
+export const usePaginatedData = <T = unknown,>({
   url,
   serializer,
   headers = {
@@ -27,7 +27,7 @@ export const usePaginatedData = <T = unknown, K = unknown>({
   },
   pageParam = "page",
   initialPage = 1,
-}: UsePaginatedDataOptions<T, K>): UsePaginatedDataReturn<T> => {
+}: UsePaginatedDataOptions<T>): UsePaginatedDataReturn<T> => {
   const [data, setData] = useState<T[]>([]);
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [isLoading, setIsLoading] = useState(false);
@@ -87,9 +87,9 @@ export const usePaginatedData = <T = unknown, K = unknown>({
 
   const loadNextPage = useCallback(() => {
     if (!isLoading) {
-      setCurrentPage((prev) => prev + 1);
+      setCurrentPage((prev: number) => prev + 1);
     }
-  }, [isLoading, hasMore]);
+  }, [isLoading]);
 
   const refetch = useCallback(() => {
     setData([]);
@@ -123,6 +123,7 @@ export const usePaginatedData = <T = unknown, K = unknown>({
       setCurrentPage(initialPage);
       setError(null);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage, url]);
 
   return {

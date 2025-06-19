@@ -5,7 +5,7 @@ import {
   SlidersHorizontal,
   X,
 } from "lucide-react-native";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "expo-router";
 import { Box } from "@/components/ui/box";
 import { Text } from "@/components/ui/text";
@@ -24,7 +24,6 @@ import {
 import {
   Accordion,
   AccordionContent,
-  AccordionContentText,
   AccordionHeader,
   AccordionIcon,
   AccordionItem,

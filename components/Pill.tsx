@@ -1,5 +1,4 @@
-import { LucideIcon, LucideProps } from "lucide-react-native";
-import { ComponentProps, ReactNode } from "react";
+import { LucideIcon } from "lucide-react-native";
 import { Box } from "./ui/box";
 import { Text } from "./ui/text";
 import { twMerge } from "tailwind-merge";

@@ -1,16 +1,13 @@
 import { ArticleCard, ArticleCardProps } from "@/components/ArticleCard";
 import { FocusAwareStatusBar } from "@/components/FocusAwareStatusBar";
 import { Pill } from "@/components/Pill";
-import { Title } from "@/components/Title";
 import { Box } from "@/components/ui/box";
 import { HStack } from "@/components/ui/hstack";
-import { SearchIcon } from "@/components/ui/icon";
-import { Input, InputField, InputIcon } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
 import { ArticleResponse } from "@/constants/types";
+import http from "@/utils/http";
 import { serializeArticles } from "@/utils/serializeArticles";
-import { useRouter } from "expo-router";
 import { GraduationCap, School } from "lucide-react-native";
 import { useCallback, useEffect, useState } from "react";
 import { FlatList, Pressable } from "react-native";
@@ -34,23 +31,26 @@ const tabs = [
 export const Articles = () => {
   const [articles, setArticles] = useState<ArticleCardProps[]>([]);
   const [activeTab, setActiveTab] = useState<string>();
-  const router = useRouter();
 
   const fetchArticles = useCallback(async (key?: string) => {
-    let url = "https://services.feshia.com/api/articles";
+    let url = "/articles";
     if (key) {
       url += `/?filter[type]=${key}`;
     }
 
-    const req = await fetch(url);
-    const res = await req.json();
+    const data = await http.get<{
+      data: ArticleResponse[];
+    }>(url);
 
-    return res.data as ArticleResponse[];
+    if (!data) return null;
+    return data.data;
   }, []);
 
   useEffect(() => {
     fetchArticles(activeTab).then((data) => {
-      setArticles(serializeArticles(data, "horizontal"));
+      if (data) {
+        setArticles(serializeArticles(data, "horizontal"));
+      }
     });
   }, [activeTab, fetchArticles]);
 

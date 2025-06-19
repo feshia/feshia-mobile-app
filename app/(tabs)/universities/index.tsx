@@ -1,5 +1,4 @@
 import { FocusAwareStatusBar } from "@/components/FocusAwareStatusBar";
-import { featuredInstitutions } from "@/components/mocks";
 import { Box } from "@/components/ui/box";
 import { HStack } from "@/components/ui/hstack";
 import { VStack } from "@/components/ui/vstack";
@@ -15,7 +14,8 @@ import { ActivityIndicator, Pressable } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
-import { UniversityCardProps } from "@/constants/types";
+import { UniversityCardProps, UniversityResponse } from "@/constants/types";
+import http from "@/utils/http";
 
 export default function Universities() {
   const [universities, setUniversities] = useState<UniversityCardProps[]>([]);
@@ -31,18 +31,16 @@ export default function Universities() {
   const fetchUniversities = useCallback(async (page: number) => {
     try {
       setIsLoading(true);
-      const url =
-        "https://services.feshia.com/api/universities" + "?page=" + page;
-      console.log("url", url);
-      const response = await fetch(url, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      });
-      const data = await response.json();
+
+      const data = await http.get<{
+        data: UniversityResponse[];
+      }>(`/universities?page=${page}`);
+
       setIsLoading(false);
+
+      if (!data) {
+        throw new Error("Failed to fetch universities");
+      }
 
       return serializeUniversities(data.data);
     } catch (error) {
@@ -61,17 +59,15 @@ export default function Universities() {
 
     try {
       setIsSearching(true);
-      const url = `https://services.feshia.com/api/universities?filter[name]=${encodeURIComponent(
-        query
-      )}`;
-      const response = await fetch(url, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      });
-      const data = await response.json();
+
+      const data = await http.get<{
+        data: UniversityResponse[];
+      }>(`/universities?filter[name]=${encodeURIComponent(query)}`);
+
+      if (!data) {
+        throw new Error("Failed to fetch universities");
+      }
+
       const results = serializeUniversities(data.data);
       setSearchResults(results);
       setShowSearchDropdown(true);

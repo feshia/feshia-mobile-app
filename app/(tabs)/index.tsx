@@ -5,8 +5,16 @@ import { Text } from "@/components/ui/text";
 import { HStack } from "@/components/ui/hstack";
 import { useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Search, GraduationCap, Video, Newspaper } from "lucide-react-native";
-import { TrendingUp, Computer, School, Wrench } from "lucide-react-native";
+import {
+  Search,
+  GraduationCap,
+  Video,
+  Newspaper,
+  TrendingUp,
+  Computer,
+  School,
+  Wrench,
+} from "lucide-react-native";
 import { Title } from "@/components/Title";
 import { UniversityCard } from "@/components/UniversityCard";
 import { TitleBar } from "@/components/TitleBar";
@@ -21,6 +29,7 @@ import {
 import { serializeUniversities } from "@/utils/serializeUniversities";
 import { ArticleCardProps } from "@/components/ArticleCard";
 import { serializeArticles } from "@/utils/serializeArticles";
+import http from "@/utils/http";
 
 const tabs = [
   {
@@ -103,27 +112,20 @@ const Home = () => {
   const [articles, setArticles] = useState<ArticleCardProps[]>([]);
 
   const fetchData = useCallback(async () => {
-    const [response] = await Promise.all([
-      fetch("https://services.feshia.com/api/homepage", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }),
-    ]);
-
-    const data = (await response.json()) as {
+    const data = await http.get<{
       universities: UniversityResponse[];
       articles: ArticleResponse[];
-    };
+    }>("/homepage");
 
     return { data };
   }, []);
 
   useEffect(() => {
     fetchData().then(({ data }) => {
-      setInstitutions(serializeUniversities(data.universities));
-      setArticles(serializeArticles(data.articles, "vertical"));
+      if (data) {
+        setInstitutions(serializeUniversities(data.universities));
+        setArticles(serializeArticles(data.articles, "vertical"));
+      }
     });
   }, [fetchData]);
 

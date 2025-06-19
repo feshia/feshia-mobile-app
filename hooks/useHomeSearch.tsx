@@ -1,4 +1,5 @@
 import { ProgramTypeResponse } from "@/constants/types";
+import http from "@/utils/http";
 import { useRouter } from "expo-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 
@@ -22,25 +23,16 @@ export const useHomeSearch = () => {
   });
 
   const fetchData = useCallback(async () => {
-    const response = await fetch(
-      "https://services.feshia.com/api/homepage/filters",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const data = (await response.json()) as AvailableFilters;
+    const data = await http.get<AvailableFilters>("/homepage/filters");
+
     return data;
   }, []);
 
   useEffect(() => {
     fetchData().then((data) => {
-      setFilters(data);
+      if (data) {
+        setFilters(data);
+      }
     });
   }, [fetchData]);
 

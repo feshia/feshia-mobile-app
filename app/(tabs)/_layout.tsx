@@ -8,7 +8,6 @@ import {
   NewspaperIcon,
   SchoolIcon,
 } from "lucide-react-native";
-import { StackActions } from "@react-navigation/native";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();

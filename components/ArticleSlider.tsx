@@ -1,7 +1,5 @@
-import { useRouter } from "expo-router";
-import { Pressable, ScrollView, Image } from "react-native";
+import { ScrollView } from "react-native";
 import { Box } from "./ui/box";
-import { Text } from "./ui/text";
 import { ArticleCard, ArticleCardProps } from "./ArticleCard";
 
 export const ArticleSlider = ({

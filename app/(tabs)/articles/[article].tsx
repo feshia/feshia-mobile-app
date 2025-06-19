@@ -1,3 +1,5 @@
+import { getWebviewUrl } from "@/utils/getWebviewUrl";
+import { useLocalSearchParams } from "expo-router";
 import { View, Dimensions, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import WebView from "react-native-webview";
@@ -5,7 +7,7 @@ import WebView from "react-native-webview";
 const ArticleScreen = () => {
   const { article, "#": hash } = useLocalSearchParams();
 
-  let uri = `https://feshia.com/articles/${article}?webview=true`;
+  let uri = getWebviewUrl(article as string);
 
   if (hash) {
     uri += `#${hash}`;

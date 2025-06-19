@@ -48,7 +48,7 @@ export const ProgramCard = ({
         </Box>
 
         <Box className="px-4 py-4">
-          <Text numberOfLines={2} className="font-title ">
+          <Text numberOfLines={2} className="font-title h-[40px]">
             {name}
           </Text>
 

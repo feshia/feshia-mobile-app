@@ -28,6 +28,8 @@ const ButtonWrapper = React.forwardRef<
   return <Pressable {...props} ref={ref} />;
 });
 
+ButtonWrapper.displayName = "ButtonWrapper";
+
 type IPrimitiveIcon = React.ComponentPropsWithoutRef<typeof Svg> & {
   height?: number | string;
   width?: number | string;
@@ -85,6 +87,8 @@ const PrimitiveIcon = React.forwardRef<
     );
   }
 );
+
+PrimitiveIcon.displayName = "PrimitiveIcon";
 
 const Root =
   Platform.OS === "web"

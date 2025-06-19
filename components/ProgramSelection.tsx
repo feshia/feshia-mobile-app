@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Pressable, ScrollView, TouchableOpacity } from "react-native";
+import { Pressable, ScrollView } from "react-native";
 import { Plus } from "lucide-react-native";
 import { HStack } from "./ui/hstack";
 import { Text } from "./ui/text";
@@ -8,7 +8,6 @@ import { VStack } from "./ui/vstack";
 
 const ProgramSelectionScreen = () => {
   const [activeTab, setActiveTab] = useState("Masters");
-  const [expandedSections, setExpandedSections] = useState({});
 
   const tabs = ["Masters", "General", "Bachelors"];
 

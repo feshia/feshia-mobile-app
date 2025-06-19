@@ -1,5 +1,4 @@
 import { Pressable } from "react-native";
-import { Box } from "./ui/box";
 import { Text } from "./ui/text";
 import { useRouter } from "expo-router";
 import { HStack } from "./ui/hstack";
