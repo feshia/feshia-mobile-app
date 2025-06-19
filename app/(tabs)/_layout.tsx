@@ -1,9 +1,14 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
-
-import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { Tabs } from "expo-router";
+import React from "react";
+import { Colors } from "@/constants/Colors";
+import { useColorScheme } from "@/hooks/useColorScheme";
+import {
+  GraduationCapIcon,
+  HomeIcon,
+  NewspaperIcon,
+  SchoolIcon,
+} from "lucide-react-native";
+import { StackActions } from "@react-navigation/native";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -11,24 +16,43 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tabIconSelected,
         headerShown: false,
-      }}>
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
+          title: "Home",
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+            <HomeIcon size={22} color={color} />
           ),
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="universities"
         options={{
-          title: 'Explore',
+          title: "Universities",
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+            <SchoolIcon size={22} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="programs"
+        options={{
+          title: "Programs",
+          tabBarIcon: ({ color, focused }) => (
+            <GraduationCapIcon size={24} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="articles"
+        options={{
+          title: "Articles",
+          tabBarIcon: ({ color, focused }) => (
+            <NewspaperIcon size={20} color={color} />
           ),
         }}
       />
