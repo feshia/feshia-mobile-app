@@ -1,4 +1,4 @@
-const API_HOST = 'https://services.feshia.com/api';
+const API_HOST = process.env.EXPO_PUBLIC_API_URL;
 
 const buildUrl = (path: string) => {
     let normalizedPath = path.startsWith('/') ? path : `/${path}`;
